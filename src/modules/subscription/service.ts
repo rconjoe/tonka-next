@@ -11,6 +11,7 @@ import {
 class SubscriptionModuleService extends MedusaService({
   Subscription
 }) {
+
   getNextOrderDate({
     last_order_date,
     expiration_date,
@@ -30,6 +31,22 @@ class SubscriptionModuleService extends MedusaService({
     const expirationMomentDate = moment(expiration_date)
 
     return nextOrderDate.isAfter(expirationMomentDate) ? null : nextOrderDate.toDate()
+  }
+
+  getExpirationDate({
+    subscription_date,
+    interval,
+    period,
+  }: {
+    subscription_date: Date,
+    interval: SubscriptionInterval,
+    period: number
+  }) {
+    return moment(subscription_date)
+      .add(
+        period,
+        interval === SubscriptionInterval.MONTHLY ? "month" : "year"
+      ).toDate()
   }
 }
 
