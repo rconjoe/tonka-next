@@ -33,6 +33,35 @@ const createSubscriptionStep = createStep(
       },
     })
 
+    linkDefs.push({
+      [SUBSCRIPTION_MODULE]: {
+        "subscription_id": subscription[0].id,
+      },
+      [Modules.ORDER]: {
+        "order_id": order_id,
+      },
+    })
+
+    linkDefs.push({
+      [SUBSCRIPTION_MODULE]: {
+        "subscription_id": subscription[0].id,
+      },
+      [Modules.CART]: {
+        "cart_id": cart_id,
+      },
+    })
+
+    if (customer_id) {
+      linkDefs.push({
+        [SUBSCRIPTION_MODULE]: {
+          "subscription_id": subscription[0].id,
+        },
+        [Modules.CUSTOMER]: {
+          "customer_id": customer_id,
+        },
+      })
+    }
+
     return new StepResponse({
       subscription: subscription[0],
       linkDefs,
