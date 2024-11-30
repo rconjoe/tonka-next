@@ -1,3 +1,6 @@
+import { InferTypeOf } from "@medusajs/framework/types"
+import Subscription from "../models/subscription"
+
 export enum SubscriptionStatus {
   ACTIVE = "active",
   CANCELED = "canceled",
@@ -6,6 +9,16 @@ export enum SubscriptionStatus {
 }
 
 export enum SubscriptionInterval {
-  MONTHLY = "montly",
+  MONTHLY = "monthly",
   YEARLY = "yearly"
 }
+
+export type CreateSubscriptionData = {
+  interval: SubscriptionInterval
+  period: number
+  status?: SubscriptionStatus
+  subscription_date?: Date
+  metadata?: Record<string, unknown>
+}
+
+export type SubscriptionData = InferTypeOf<typeof Subscription>
