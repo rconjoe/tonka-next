@@ -69,7 +69,10 @@ const createSubscriptionStep = createStep(
       subscription: subscription[0]
     })
   }, async ({ subscription }, { container }) => {
-    // TODO implmement compensation
+    // const subscriptionModuleService: SubscriptionModuleService =
+    //   container.resolve(SUBSCRIPTION_MODULE)
+    //
+    // await subscriptionModuleService.cancelSubscriptions(subscription.id)
   }
 )
 
