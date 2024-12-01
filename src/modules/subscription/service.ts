@@ -81,6 +81,52 @@ class SubscriptionModuleService extends MedusaService({
         interval === SubscriptionInterval.MONTHLY ? "month" : "year"
       ).toDate()
   }
+
+  async recordNewSubscriptionOrder(id: string): Promise<SubscriptionData[]> {
+    const subscription = await this.retrieveSubscription(id)
+
+    const orderDate = new Date()
+
+    return await this.updateSubscriptions({
+      id,
+      last_order_date: orderDate,
+      next_order_date: this.getNextOrderDate({
+        last_order_date: orderDate,
+        expiration_date: subscription.expiration_date,
+        interval: subscription.interval,
+        period: subscription.period
+      })
+    })
+  }
+
+  async expireSubscription(id: string | string[]): Promise<SubscriptionData[]> {
+    const input = Array.isArray(id) ? id : [id]
+
+    return await this.updateSubscriptions({
+      selector: {
+        id: input,
+      },
+      data: {
+        next_order_date: null,
+        status: SubscriptionStatus.EXPIRED,
+      },
+    })
+  }
+
+  async cancelSubscriptions(
+    id: string | string[]): Promise<SubscriptionData[]> {
+    const input = Array.isArray(id) ? id : [id]
+
+    return await this.updateSubscriptions({
+      selector: {
+        id: input,
+      },
+      data: {
+        next_order_date: null,
+        status: SubscriptionStatus.CANCELED,
+      },
+    })
+  }
 }
 
 export default SubscriptionModuleService
